@@ -5,11 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.CommandGroups;
+package frc.robot.commands.collector;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Collector.CollectorIn;
-import frc.robot.commands.Collector.SetNeoPercent;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.Collector;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -18,10 +18,9 @@ public class DeployCollector extends SequentialCommandGroup {
   /**
    * Creates a new DeployCollector.
    */
-  public DeployCollector() {
-    super(
-      new CollectorIn(),
-      new SetNeoPercent(0.65)
-    );
+  public DeployCollector(Collector collector) {
+    super(new CollectorOut(collector),
+          new WaitCommand(0.25),
+          new SetCollectorPercent(collector, 0.75));
   }
 }

@@ -5,38 +5,42 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Collector;
+package frc.robot.commands.collector;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.subsystems.Collector;
 
 public class CollectorIn extends CommandBase {
   /**
    * Creates a new CollectorIn.
    */
-  public CollectorIn() {
-    // Use addRequirements() here to declare subsystem dependencies.
+
+  private Collector m_collector;
+  
+  public CollectorIn(Collector collector) {
+    m_collector = collector;
+    addRequirements(m_collector);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_collector.collectorIn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    Robot.m_collector.collectorIn();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
   }
-
+ 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return !(m_collector.isOut());  // TODO end when the collector is actually stowed in
+    //TODO test
   }
 }

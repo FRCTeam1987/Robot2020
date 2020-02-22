@@ -5,9 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.CommandGroups;
+package frc.robot.commands.collector;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.Collector;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -16,7 +18,9 @@ public class RetractCollector extends SequentialCommandGroup {
   /**
    * Creates a new RetractCollector.
    */
-  public RetractCollector() {
-    super();
+  public RetractCollector(Collector collector) {
+    super(new CollectorIn(collector),
+          new WaitCommand(0.25),
+          new SetCollectorPercent(collector, 0.0));
   }
 }

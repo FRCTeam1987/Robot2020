@@ -7,12 +7,14 @@
 
 package frc.robot;
 
-/**
- * Add your docs here.
- */
-public class Util {
 
-    public static double wheelRotationsToTicks(final double wheelRotations) {
-        return (int)(wheelRotations * 2048 * 9.09);
+public class Util {
+    // TODO should return int if ticks
+    public static double wheelRotationsToTicks(final double wheelRotations, final double reduction) {
+        return (int)(wheelRotations * Constants.ticksPerRotation * reduction);
+    }
+
+    public static boolean isWithinTolerance(double currentValue, double targetValue, double tolerance){
+        return Math.abs(currentValue - targetValue) <= tolerance;
     }
 }

@@ -5,32 +5,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.collector;
+package frc.robot.commands.elevator;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.Elevator;
 
-public class CollectorOut extends CommandBase {
+public class SetLiftUp extends CommandBase {
+  private Elevator m_elevator;
+  private final double m_wait = 0.9;
+  private double m_startTime;
+
   /**
-   * Creates a new CollectorOut.
+   * Creates a new SetLiftUp.
    */
-  private Collector m_collector;
-
-  public CollectorOut(Collector collector) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_collector = collector;
-    addRequirements(m_collector);
+  public SetLiftUp(Elevator elevator) {
+    m_elevator = elevator;
+    m_startTime = 0;
+    addRequirements(m_elevator);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_collector.collectorOut();
+    m_elevator.setLiftUp();
+    m_startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -40,7 +45,7 @@ public class CollectorOut extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_collector.isOut();  // TODO end when the collector is in position
-    //TODO test
+    // TODO only end after it's actually up
+    return Timer.getFPGATimestamp() - m_startTime >= m_wait;
   }
 }

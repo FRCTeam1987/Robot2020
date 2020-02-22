@@ -11,58 +11,70 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Drive extends SubsystemBase {
 
+  // TODO make LazyTalonFX - see Jon
   private final WPI_TalonFX leftMaster;
   private final WPI_TalonFX leftSlave;
   private final WPI_TalonFX rightMaster;
   private final WPI_TalonFX rightSlave;
 
+  private final AHRS ahrs;
+
   private final DifferentialDrive robotDrive;
 
   // private static FalconDrive instance = null;
+
+  // TODO implement auto driving methods
   /**
    * Creates a new Drive.
    */
   public Drive() {
-    leftMaster = new WPI_TalonFX(3);
-    leftSlave = new WPI_TalonFX(4);
-    rightMaster = new WPI_TalonFX(5);
-    rightSlave = new WPI_TalonFX(6);
+    leftMaster = new WPI_TalonFX(Constants.leftMasterID);
+    leftSlave = new WPI_TalonFX(Constants.leftSlaveID);
+    rightMaster = new WPI_TalonFX(Constants.rightMasterID);
+    rightSlave = new WPI_TalonFX(Constants.rightSlaveID);
     robotDrive = new DifferentialDrive(leftMaster, rightMaster);
+    ahrs = new AHRS(Port.kMXP);
     robotDrive.setSafetyEnabled(false);
+    // TODO invert right side of DifferentialDrive
 
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
     leftMaster.configFactoryDefault();
     leftMaster.setNeutralMode(NeutralMode.Coast);
+    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
 
     rightMaster.configFactoryDefault();
     rightMaster.setNeutralMode(NeutralMode.Coast);
     rightMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
   }
 
-  public void xBoxDrive (XboxController xBox){
-    double move = xBox.getTriggerAxis(Hand.kRight) - xBox.getTriggerAxis(Hand.kLeft);
-    double rotate = -xBox.getX(Hand.kLeft); //invert turning
-
+  public void tankDrive (final double left, final double right){
+    System.out.println("aimbot-output: " + left + ", " + right);
+    robotDrive.tankDrive(left, right);
+  }
+  
+  public void arcadeDrive(final double move, final double rotate) {
     robotDrive.arcadeDrive(move, rotate, true);
   }
 
-  public void tankDrive (final double left, final double right){
-    robotDrive.tankDrive(left, right);
+  public void curvatureDrive(final double move, final double rotate, final boolean isQuickTurn) {
+    robotDrive.curvatureDrive(move, rotate, isQuickTurn);
   }
 
   public void setPercent(double percent) {
     rightMaster.set(ControlMode.PercentOutput, percent);
     leftMaster.set(ControlMode.PercentOutput, percent);
+    robotDrive.feed();
   }
 
   public int getLeftPosition(){

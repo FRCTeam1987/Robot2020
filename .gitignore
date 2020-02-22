@@ -43,4 +43,3 @@ gradle-app.setting
 .project
 .settings/
 bin/
-*.jar
