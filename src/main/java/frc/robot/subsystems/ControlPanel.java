@@ -36,6 +36,10 @@ public class ControlPanel extends SubsystemBase {
   private ColorMatchResult currentColor;
   private boolean hasRunBefore;
 
+// TODO CP cant be up if elevator is up, elevator can't be up when CP is up
+// TODO make it so the CP doesn't retract until the robot has backed away
+// TODO driver must keep pressing against field CP because neither are perfectly concentric and both are hard wheels
+// TODO turn off sensor light because LED ring gives us enough
 
   public ControlPanel() {
     m_colorSensor = new ColorSensorV3(Constants.i2cPort);

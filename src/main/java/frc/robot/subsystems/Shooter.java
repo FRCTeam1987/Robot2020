@@ -38,7 +38,7 @@ public class Shooter extends SubsystemBase {
     master.setNeutralMode(NeutralMode.Coast);
     master.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
     master.configClosedloopRamp(0.5);
-    master.config_kF(0, 0.052); //get started umf (increases the actual base rpm exponentially or something)
+    master.config_kF(0, 0.0513); //get started umf (increases the actual base rpm exponentially or something) was.052 old BAT, new bat .0498, then was .055 for 3550 rpm, then .052
     master.config_kP(0, 0.25); //p = push and oscillating once it gets there
     master.config_kI(0, 0.0);
     master.config_kD(0, 0.0); //d =  dampening for the oscillation
@@ -100,6 +100,15 @@ public class Shooter extends SubsystemBase {
    */
   public boolean isInRPMTolerance() {
     return Util.isWithinTolerance(getRPM(), rpmSetPoint, Constants.shooterRPMTolerance);
+  }
+
+  public void turnOnLEDs(){
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+  }
+
+  public void turnOffLEDs(){
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+
   }
 
   public void setPercent(double percent) {

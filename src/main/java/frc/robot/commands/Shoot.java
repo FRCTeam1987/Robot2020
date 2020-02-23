@@ -28,7 +28,7 @@ public class Shoot extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     // TODO only allow this to run if elevator is up
     super(
-      new SetRPMreal(shooter, 3000),  // 4500 behind control panel, 3550 for in front of CP spot, 3000 for init line
+      new SetRPMreal(shooter, 3600),  // 4500 behind control panel, 3550 for in front of CP spot, 3000 for init line
       // new SetRPMreal(shooter),  // get the number from the smart dashboard
       new SetLiftUp(elevator),
       new SetElevatorPercent(elevator, 1.0),

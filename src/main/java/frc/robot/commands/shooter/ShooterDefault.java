@@ -30,14 +30,14 @@ public class ShooterDefault extends CommandBase {
 
   @Override
   public void execute() {
-    if (m_elevator.getNumOfBallsInLift() >= 1 && m_shooter.shouldSpinUp()) {
+    if (m_elevator.getNumOfBallsInLift() > 0 && m_elevator.getNumOfBallsInLift() < 4 && m_shooter.shouldSpinUp()) {
       // if (m_elevator.getNumOfBallsInLift() >= 1) {
       //   System.out.println("shooter-state-balls" + m_elevator.getNumOfBallsInLift());
       // }
       // if (m_shooter.shouldSpinUp()) {
       //   System.out.println("shooter-state-spin" + m_shooter.shouldSpinUp());
       // }
-      m_shooter.setRPM(3500); // Dynamically set RPM based on distance... when we get to that point
+      m_shooter.setRPM(3025); // Dynamically set RPM based on distance... when we get to that point
     } else {
       // System.out.println("shooter-state-stop");
       m_shooter.stop();

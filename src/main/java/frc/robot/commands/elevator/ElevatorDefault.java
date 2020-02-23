@@ -72,7 +72,11 @@ public class ElevatorDefault extends CommandBase {
     m_elevator.stop();
   }
 
-  private boolean isLoading(){
+  public boolean getIsLoadingForTest() {
+    return m_isLoading;
+  }
+
+  public boolean isLoading(){
     return !m_elevator.hasMaxNumberOfBalls() && m_elevator.isBallAtEntrance();
   }
 

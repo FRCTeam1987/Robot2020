@@ -19,7 +19,7 @@ import frc.robot.Constants;
 public class Collector extends SubsystemBase {
   
   private final CANSparkMax m_neo;
-  private final CANSparkMax m_backRoller;
+  // private final CANSparkMax m_backRoller;
   private CANPIDController m_pidController;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
@@ -30,10 +30,10 @@ public class Collector extends SubsystemBase {
     piston = new DoubleSolenoid(Constants.collectorOut, Constants.collectorIn);
 
     m_neo = new CANSparkMax(Constants.collectorBack, MotorType.kBrushless);
-    m_backRoller = new CANSparkMax(Constants.neoID, MotorType.kBrushless);
+    // m_backRoller = new CANSparkMax(Constants.neoID, MotorType.kBrushless);
     m_neo.restoreFactoryDefaults();
     m_neo.setInverted(true);
-    m_backRoller.follow(m_neo, true);
+    // m_backRoller.follow(m_neo, true);
 
     m_pidController = m_neo.getPIDController();
     
@@ -49,7 +49,7 @@ public class Collector extends SubsystemBase {
   // TODO implemet setting an RPM if using the pid controller, otherwise remove the pid controller
 
   public void setNeoPercent(double percent){
-    m_neo.set(-percent); //TODO (see comment below) either wiring, build or programmers need to properly do this
+    m_neo.set(percent); //TODO (see comment below) either wiring, build or programmers need to properly do this
     //swapped master and slave IDs cuz front collector (master) was removed, so this was inverted temporarily until it's re-wired 
     //properly, build puts back the collector, or properly changed in code
   }

@@ -63,6 +63,10 @@ public class Elevator extends SubsystemBase {
     return entranceDebouncer.get();
   }
 
+  public boolean isBallAtEntranceRaw(){
+    return lowProx.get();
+  }
+
   public double getBottomMotorCurrent(){
     return m_pdp.getCurrent(4);
   }

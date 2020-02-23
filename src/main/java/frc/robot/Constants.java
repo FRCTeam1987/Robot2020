@@ -127,9 +127,9 @@ public final class Constants {
         public final static String gameColorTargetRed = "B";
 
     // Shooter
-    public final static double shooterAngleTolerance = 1.0;
+    public final static double shooterAngleTolerance = 2.0;
     public final static double shooterAngleErrorToSpinUp = 5.0;
-    public final static double shooterRPMTolerance = 100.0;
+    public final static double shooterRPMTolerance = 15.0;
 
     public static class PDPMap {
         public static final int elevatorBottomMotor = 4;
