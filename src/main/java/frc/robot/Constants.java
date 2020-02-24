@@ -129,7 +129,67 @@ public final class Constants {
     // Shooter
     public final static double shooterAngleTolerance = 2.0;
     public final static double shooterAngleErrorToSpinUp = 5.0;
-    public final static double shooterRPMTolerance = 15.0;
+    public final static double shooterRPMTolerance = 25.0;
+
+    public final static double ty1 = -6.41;
+    public final static double ty2 = -5.85;
+    public final static double ty3 = -5.02;
+    public final static double ty4 = -4.68;
+    public final static double ty5 = -4.4;
+    public final static double ty6 = -3.33;
+    public final static double ty7 = -3.04;
+    public final static double tyA = -1.94;
+    public final static double tyB = -0.98;
+    public final static double ty8 = -0.83;
+    public final static double ty9 = 0.78;
+    public final static double tyC = 1.57;
+    public final static double ty10 = 3.21;
+    public final static double ty11 = 5.19;
+    public final static double ty12 = 8.08;
+    public final static double ty13 = 12.55;
+    public final static double ty14 = 16.74;
+    public final static double ty15 = 18.88;
+
+    public final static double rpm1 = 4100;
+    public final static double rpm2 = 3850;
+    public final static double rpm3 = 3700;
+    public final static double rpm4 = 3650;
+    public final static double rpm5 = 3575;
+    public final static double rpm6 = 3550;
+    public final static double rpm7 = 3525;
+    public final static double rpmA = 3420;
+    public final static double rpmB = 3325;
+    public final static double rpm8 = 3325;
+    public final static double rpm9 = 3200;
+    public final static double rpmC = 3200;
+    public final static double rpm10 = 3100;
+    public final static double rpm11 = 3040;
+    public final static double rpm12 = 3040;
+    public final static double rpm13 = 3040;
+    public final static double rpm14 = 3035;
+    public final static double rpm15 = 3025;
+
+    public static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kDistanceToShooterSpeed = new InterpolatingTreeMap<>();
+    static {
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty1), new InterpolatingDouble(rpm1));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty2), new InterpolatingDouble(rpm2));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty3), new InterpolatingDouble(rpm3));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty4), new InterpolatingDouble(rpm4));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty5), new InterpolatingDouble(rpm5));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty6), new InterpolatingDouble(rpm6));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty7), new InterpolatingDouble(rpm7));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(tyA), new InterpolatingDouble(rpmA));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(tyB), new InterpolatingDouble(rpmB));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty8), new InterpolatingDouble(rpm8));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty9), new InterpolatingDouble(rpm9));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(tyC), new InterpolatingDouble(rpmC));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty10), new InterpolatingDouble(rpm10));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty11), new InterpolatingDouble(rpm11));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty12), new InterpolatingDouble(rpm12));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty13), new InterpolatingDouble(rpm13));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty14), new InterpolatingDouble(rpm14));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty15), new InterpolatingDouble(rpm15));
+    }
 
     public static class PDPMap {
         public static final int elevatorBottomMotor = 4;

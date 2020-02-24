@@ -59,7 +59,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void tankDrive (final double left, final double right){
-    System.out.println("aimbot-output: " + left + ", " + right);
+    // System.out.println("aimbot-output: " + left + ", " + right);
     robotDrive.tankDrive(left, right);
   }
   

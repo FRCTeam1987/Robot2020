@@ -8,6 +8,7 @@
 package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.DigitalGlitchFilter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.DigitalDebouncer;
 import frc.robot.subsystems.Elevator;
@@ -45,30 +46,44 @@ public class ElevatorDefault extends CommandBase {
     } else{
       if (m_isLoading){
         m_elevator.incrementNumofBallsInLift();
-        System.out.println("elevator - increment ball: " + m_elevator.getNumOfBallsInLift());
+        SmartDashboard.putString("elevator", "increment ball: " + m_elevator.getNumOfBallsInLift());
+        if(m_elevator.isBallAtTop()){
+          // m_elevator.topRunDown();
+          m_elevator.stop();
+        }
+        // System.out.println("elevator - increment ball: " + m_elevator.getNumOfBallsInLift());
         m_isLoading = false;
       }
     }
     if (m_shooter.canShoot()) {
-      System.out.println("elevator - can shoot");
+      SmartDashboard.putString("elevator", "can shoot");
+      // System.out.println("elevator - can shoot");
       m_elevator.forward();
       return;
     }
+    // if (m_elevator.isBallAtTop()) {
+    //   SmartDashboard.putString("elevator", "ball at top");
+    //   m_elevator.topRunDown();
+    //   return;
+    // }
     if (m_elevator.hasMaxNumberOfBalls()) {
-      System.out.println("elevator - has max number of balls");
+      SmartDashboard.putString("elevator", "has max number of balls");
+      // System.out.println("elevator - has max number of balls");
       m_elevator.stop();
       return;
     }
     if (m_elevator.isBallAtEntrance()){
-      System.out.println("elevator - is ball at entrance");
-      if (m_elevator.getNumOfBallsInLift() >= 1) {
-        m_elevator.bottomRun();
+      SmartDashboard.putString("elevator", "is ball at entrance");
+      // System.out.println("elevator - is ball at entrance");
+      if (m_elevator.getNumOfBallsInLift() >= 1 ) {
+        m_elevator.bottomRunSlow();
       } else {
         m_elevator.forward();
       }
       return;
     }
-    System.out.println("elevator - default stop");
+    SmartDashboard.putString("elevator", "default stop");
+    // System.out.println("elevator - default stop");
     m_elevator.stop();
   }
 

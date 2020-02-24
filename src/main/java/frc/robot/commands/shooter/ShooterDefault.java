@@ -9,6 +9,10 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.DigitalDebouncer;
+import frc.robot.InterpolatingDouble;
+import frc.robot.Util;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shooter;
 
@@ -16,32 +20,58 @@ public class ShooterDefault extends CommandBase {
   
   private Shooter m_shooter;
   private Elevator m_elevator;
+  private DigitalDebouncer rpmDebouncer;
+  private boolean isShooting;
+  private boolean topWasTripped;
+  private boolean topIsTripped;
+  private double m_rpm;
+
 
   public ShooterDefault(final Shooter shooter, final Elevator elevator) {
     m_shooter = shooter;
     m_elevator = elevator;
     addRequirements(m_shooter);
+
+    rpmDebouncer = new DigitalDebouncer(.1);
+    isShooting = false;
+    topIsTripped = m_elevator.isBallAtTop();
+    topWasTripped = false;
   }
 
   @Override
   public void initialize() {
     m_shooter.stop();
+    topWasTripped = false;
   }
 
   @Override
   public void execute() {
+    rpmDebouncer.periodic(m_shooter.isInRPMTolerance());
     if (m_elevator.getNumOfBallsInLift() > 0 && m_elevator.getNumOfBallsInLift() < 4 && m_shooter.shouldSpinUp()) {
-      // if (m_elevator.getNumOfBallsInLift() >= 1) {
-      //   System.out.println("shooter-state-balls" + m_elevator.getNumOfBallsInLift());
+
+      if (topWasTripped && !m_elevator.isBallAtTop()) {
+        m_elevator.decrementNumofBallsInLift();
+      }
+
+      // if(!rpmDebouncer.get() ){
+      //   isShooting = true;
+      // }else if(isShooting ){
+      //   isShooting = false;
+      //   if (topWasTripped && !topIsTripped){
+      //     m_elevator.decrementNumofBallsInLift();
+      //     topWasTripped = false;
+      //   }else {
+      //     topWasTripped = topIsTripped;
+      //   }
       // }
-      // if (m_shooter.shouldSpinUp()) {
-      //   System.out.println("shooter-state-spin" + m_shooter.shouldSpinUp());
-      // }
-      m_shooter.setRPM(3025); // Dynamically set RPM based on distance... when we get to that point
+      // m_rpm = 3311 + (-69.1 * m_ty) + Math.pow(3.1,2);
+      // m_shooter.setRPM(Constants.kDistanceToShooterSpeed.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value); // Dynamically set RPM based on distance... when we get to that point
+      m_shooter.setRPM(3225);
+      SmartDashboard.putNumber("default shooter rpm", m_rpm);
     } else {
-      // System.out.println("shooter-state-stop");
       m_shooter.stop();
     }
+    topWasTripped = m_elevator.isBallAtTop();
   }
 
   @Override

@@ -64,9 +64,10 @@ public class Index extends CommandBase {
       if (m_elevator.isBallAtEntrance()) {
         isIndexing = true;
         m_elevator.bottomRun();
-        if (m_elevator.isDown()) {
+        if (m_elevator.isDown() && !m_elevator.isBallAtTop()) {
           m_elevator.topRun();
         }
+
         // m_elevator.setPercent(1);
         m_hopper.setPercent(1);
       

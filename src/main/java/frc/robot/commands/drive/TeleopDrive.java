@@ -47,15 +47,20 @@ public class TeleopDrive extends CommandBase {
     // TODO fix move negative forward
     double move = (m_driver.getTriggerAxis(Hand.kRight) - m_driver.getTriggerAxis(Hand.kLeft)) * -1;
     double rotate = -m_driver.getX(Hand.kLeft); //invert turning
+    // m_shooter.turnOnLEDs();
 
     // TODO make this aim assist code not hacky
+    // TODO make sure you see target before
     if (m_driver.getBackButton() && Math.abs(m_shooter.getAngleError()) > 1) { //1 degree is tolerance, change if need to
+      // m_shooter.turnOnLEDs();
       double aimAssist = 0.0;
       double angleError = m_shooter.getAngleError();
       aimAssist = Math.copySign(Math.max(Math.abs(angleError) / 25.0 * 0.7, aimAssistMinMove), -angleError);
       m_driveSubsystem.arcadeDrive(move, aimAssist);
       return;
-    }
+    } //else {
+    //   // m_shooter.turnOffLEDs();
+    // }
 
     // TODO this is to try out, remove this if we don't want it
     if (shouldCurvatureDrive) {

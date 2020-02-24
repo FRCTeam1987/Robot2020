@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,6 +19,7 @@ public class Elevator extends SubsystemBase {
   private final WPI_VictorSPX bottomMotors;
   private final DoubleSolenoid lift;
   private final DigitalInput lowProx;
+  private final DigitalInput highProx;
   private int ballsInLift;
   private final PowerDistributionPanel m_pdp;
   private DigitalDebouncer entranceDebouncer;
@@ -28,6 +30,7 @@ public class Elevator extends SubsystemBase {
     // bottomMotors.follow(topMotors);
     lift = new DoubleSolenoid(Constants.elevatorLiftIn, Constants.elevatorLiftOut);
     lowProx = new DigitalInput(0);
+    highProx = new DigitalInput(1);
     entranceDebouncer = new DigitalDebouncer(.25);
     ballsInLift = 0;
     m_pdp = pdp;
@@ -63,8 +66,12 @@ public class Elevator extends SubsystemBase {
     return entranceDebouncer.get();
   }
 
+  public boolean isBallAtTop(){
+    return !highProx.get();
+  }
+
   public boolean isBallAtEntranceRaw(){
-    return lowProx.get();
+    return !lowProx.get();
   }
 
   public double getBottomMotorCurrent(){
@@ -85,6 +92,10 @@ public class Elevator extends SubsystemBase {
 
   public void bottomRun() {
     bottomMotors.set(ControlMode.PercentOutput, 1);
+  }
+
+  public void bottomRunSlow(){
+    bottomMotors.set(ControlMode.PercentOutput, .75);
   }
 
   public void bottomRunDown() {
@@ -135,7 +146,10 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Low Elev Prox", !lowProx.get());
+    SmartDashboard.putBoolean("High Elev Prox", !highProx.get());
+    SmartDashboard.putNumber("Balls in lift", ballsInLift);
     SmartDashboard.putBoolean("elevator-isDown", isDown());
     entranceDebouncer.periodic(!lowProx.get());
+
   }
 }

@@ -54,7 +54,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean canShoot() {
-    System.out.println("shooter - isOnTarget: " + isOnTarget() + ", isRPM: " + isInRPMTolerance());
+    // System.out.println("shooter - isOnTarget: " + isOnTarget() + ", isRPM: " + isInRPMTolerance());
     return isOnTarget() && isInRPMTolerance();
   }
 
@@ -63,7 +63,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setRPM(final double rpm) {
-    if (rpmSetPoint == rpm) { // don't set the same RPM again
+    SmartDashboard.putNumber("(set value) shooter rpm", rpm);
+    if (rpmSetPoint == rpm) { // don't set the same RPM again if it's been set to something close enough already
       return;
     }
     double velocity = rpm * Constants.ticksPerRotation / Constants.milliPerMin; //1,000ms per sec, but robot cares about per 100ms, so then 60 sec/min 
@@ -75,11 +76,19 @@ public class Shooter extends SubsystemBase {
     return master.getSensorCollection().getIntegratedSensorVelocity() / Constants.ticksPerRotation * Constants.milliPerMin * Constants.shooterReduction;
   }
 
+  public boolean canSeeTarget() {
+    return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1;
+  }
+
   public double getAngleError(){
-    if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 0) {
+    if (!canSeeTarget()) {
       return 100;
     }
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+  }
+
+  public double getTY(){
+    return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
   }
 
   public boolean isOnTarget() {

@@ -63,6 +63,7 @@ public class RobotContainer {
   private final JoystickButton reverseHopper;
   private final JoystickButton index;
   private final JoystickButton controlPanel;
+  private final JoystickButton autoAim;
   // private final JoystickButton autoAim;
 
   private final PowerDistributionPanel m_pdp = new PowerDistributionPanel();
@@ -87,7 +88,7 @@ public class RobotContainer {
     index = new JoystickButton(driver, XboxController.Button.kStickRight.value);
     testRunAll = new XboxDPad(driver, XboxDPad.Direction.Up);
     testStopAll = new XboxDPad(driver, XboxDPad.Direction.Down);
-
+    autoAim = new JoystickButton(driver, XboxController.Button.kBack.value);
     reverseHopper = new JoystickButton(coDriver, XboxController.Button.kB.value);
 
     // autoAim = new JoystickButton(driver, XboxController.Button.kBack.value);
@@ -139,6 +140,7 @@ public class RobotContainer {
     );
     runCollectorMotors.whenPressed(new SetCollectorPercent(m_collector, 1.0));
     runCollectorMotors.whenReleased(new SetCollectorPercent(m_collector, 0.0));
+    autoAim.whileHeld(new AimBot(m_shooter, m_drive, false));
     // controlPanel.whenPressed(new );
 
     // secondary driver
@@ -173,7 +175,7 @@ public class RobotContainer {
     );
     SmartDashboard.putData("Lower Elevator", new SetLiftDown(m_elevator));
     SmartDashboard.putData("Raise Elevator", new SetLiftUp(m_elevator));
-    SmartDashboard.putData("AimBot", new AimBot(m_drive, m_shooter));
+    SmartDashboard.putData("AimBot", new AimBot(m_shooter, m_drive, true));
     SmartDashboard.putNumber("Shooter RPM", 4000);
     SmartDashboard.putData("Index", new Index(m_elevator, m_hopper));
     SmartDashboard.putData("Shoot", new Shoot(m_shooter, m_elevator, m_hopper));

@@ -8,6 +8,7 @@
 package frc.robot.commands.hopper;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.DigitalDebouncer;
 import frc.robot.subsystems.Elevator;
@@ -55,17 +56,18 @@ public class HopperDefault extends CommandBase {
     currentTime = Timer.getFPGATimestamp();
     isJammed.periodic(m_hopper.getCurrent() > motorStallAmps);
     if (m_elevator.isBallAtEntranceRaw() && !m_elevator.isBottomRunning()){ //supposed to keep hopper from spinning when elevator isn't to prevent jams
+      SmartDashboard.putString("hopper", "ball at entrance, elevator not running");
       m_hopper.stop();
       return;
     }
     if (getCurrentTime() <= jamStartTime + allowableStallDuration) {
       // TODO notify the driver of a jam once
-      System.out.println("hopper - Stopping for jam.");
+      SmartDashboard.putString("hopper", "Stopping for jam");
       m_hopper.stop();
       return;
     }
     if (isJammed.get()) {
-      System.out.println("hopper - jammed");
+      SmartDashboard.putString("hopper", "jammed");
       if (jamStartTime != defaultJamStartTime) {
         jamStartTime = getCurrentTime();
       }
@@ -73,11 +75,11 @@ public class HopperDefault extends CommandBase {
       return;
     }
     if (m_elevator.hasMaxNumberOfBalls()) {
-      System.out.println("hopper - max number of balls in elevator");
+      SmartDashboard.putString("hopper", "max number of balls in elevator");
       m_hopper.stop();
       return;
     }
-    System.out.println("hopper - default run");
+    SmartDashboard.putString("hopper", "default run");
     m_hopper.forward();
   }
 
