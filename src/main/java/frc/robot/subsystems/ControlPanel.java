@@ -69,6 +69,13 @@ public class ControlPanel extends SubsystemBase {
     deploy.set(DoubleSolenoid.Value.kReverse);
   }
 
+  public boolean isOnCP(){
+    if(m_colorSensor.getProximity() != 0){ 
+      return true;
+    }
+    return false;
+  }
+
   public void toggleHasRunBefore(){
     if(hasRunBefore){ //btw I know you don't need the curly brackets for 1 liners but it looks weird
       hasRunBefore = false;

@@ -54,9 +54,6 @@ public final class Constants {
     public static int elevatorTopMotorsID = 7;
     public static int elevatorBottomMotorsID = 5;
 
-    public static int climberMasterID = 1;
-    public static int climberSlaveID = 2;
-
     public static int controlPanelMotorID = 4;
 
 
@@ -90,9 +87,6 @@ public final class Constants {
 
     public static int elevatorLiftIn = 1;
     public static int elevatorLiftOut = 0;
-
-
-    public static int climberDeploy = 4;
 
     public static int controlPanelDeploy = 5;
     public static int controlPanelRetract = 6;
@@ -138,17 +132,17 @@ public final class Constants {
     public final static double ty5 = -4.4;
     public final static double ty6 = -3.33;
     public final static double ty7 = -3.04;
-    public final static double tyA = -1.94;
-    public final static double tyB = -0.98;
-    public final static double ty8 = -0.83;
-    public final static double ty9 = 0.78;
-    public final static double tyC = 1.57;
-    public final static double ty10 = 3.21;
-    public final static double ty11 = 5.19;
-    public final static double ty12 = 8.08;
-    public final static double ty13 = 12.55;
-    public final static double ty14 = 16.74;
-    public final static double ty15 = 18.88;
+    public final static double ty8 = -1.94;
+    public final static double ty9 = -0.98;
+    public final static double ty10 = -0.83;
+    public final static double ty11 = 0.78;
+    public final static double ty12 = 1.57;
+    public final static double ty13 = 3.21;
+    public final static double ty14 = 5.19;
+    public final static double ty15 = 8.08;
+    public final static double ty16 = 12.55;
+    public final static double ty17 = 16.74;
+    public final static double ty18 = 18.88;
 
     public final static double rpm1 = 4100;
     public final static double rpm2 = 3850;
@@ -157,17 +151,17 @@ public final class Constants {
     public final static double rpm5 = 3575;
     public final static double rpm6 = 3550;
     public final static double rpm7 = 3525;
-    public final static double rpmA = 3420;
-    public final static double rpmB = 3325;
-    public final static double rpm8 = 3325;
-    public final static double rpm9 = 3200;
-    public final static double rpmC = 3200;
-    public final static double rpm10 = 3100;
-    public final static double rpm11 = 3040;
-    public final static double rpm12 = 3040;
-    public final static double rpm13 = 3040;
-    public final static double rpm14 = 3035;
-    public final static double rpm15 = 3025;
+    public final static double rpm8 = 3420;
+    public final static double rpm9 = 3325;
+    public final static double rpm10 = 3325;
+    public final static double rpm11 = 3200;
+    public final static double rpm12 = 3200;
+    public final static double rpm13 = 3100;
+    public final static double rpm14 = 3040;
+    public final static double rpm15 = 3040;
+    public final static double rpm16 = 3040;
+    public final static double rpm17 = 3035;
+    public final static double rpm18 = 3025;
 
     public static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kDistanceToShooterSpeed = new InterpolatingTreeMap<>();
     static {
@@ -178,27 +172,39 @@ public final class Constants {
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty5), new InterpolatingDouble(rpm5));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty6), new InterpolatingDouble(rpm6));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty7), new InterpolatingDouble(rpm7));
-        kDistanceToShooterSpeed.put(new InterpolatingDouble(tyA), new InterpolatingDouble(rpmA));
-        kDistanceToShooterSpeed.put(new InterpolatingDouble(tyB), new InterpolatingDouble(rpmB));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty8), new InterpolatingDouble(rpm8));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty9), new InterpolatingDouble(rpm9));
-        kDistanceToShooterSpeed.put(new InterpolatingDouble(tyC), new InterpolatingDouble(rpmC));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty10), new InterpolatingDouble(rpm10));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty11), new InterpolatingDouble(rpm11));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty12), new InterpolatingDouble(rpm12));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty13), new InterpolatingDouble(rpm13));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty14), new InterpolatingDouble(rpm14));
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty15), new InterpolatingDouble(rpm15));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty16), new InterpolatingDouble(rpm16));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty17), new InterpolatingDouble(rpm17));
+        kDistanceToShooterSpeed.put(new InterpolatingDouble(ty18), new InterpolatingDouble(rpm18));
+    }
+
+    public static class Climber {
+        public static class Actuators {
+            public static class Motors {
+                public static final int winchMaster = 1;  // TODO update
+                public static final int winchSlave = 2;   // TODO update
+            }
+            public static class Solenoids {
+                public static final int releasePinID = 4;
+            }
+        }
+    }
+
+    public static class Elevator {
+        public static final int maxNumberOfBallsWhileDown = 1;
+        public static final int maxNumberOfBallsWhileUp = 3;
     }
 
     public static class PDPMap {
         public static final int elevatorBottomMotor = 4;
         public static final int elevatorTopMotor = 5;
         public static final int hopperMotor = 11;
-    }
-
-    public static class Elevator {
-        public static final int maxNumberOfBallsWhileDown = 1;
-        public static final int maxNumberOfBallsWhileUp = 3;
     }
 }

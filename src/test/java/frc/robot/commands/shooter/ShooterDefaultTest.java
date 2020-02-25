@@ -19,241 +19,241 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.shooter.*;
 
 public class ShooterDefaultTest {
-    private Shooter mockedShooter;
-    private Elevator mockedElevator;
+  private Shooter mockedShooter;
+  private Elevator mockedElevator;
  
-    @Before
+  @Before
 	public void before() {
-        TestWithScheduler.schedulerStart();
+    TestWithScheduler.schedulerStart();
 		TestWithScheduler.schedulerClear();
 		MockHardwareExtension.beforeAll();
 
-        mockedShooter = mock(Shooter.class);
-        mockedElevator = mock(Elevator.class);
+    mockedShooter = mock(Shooter.class);
+    mockedElevator = mock(Elevator.class);
 	}
 
-     @Test
-     public void verifyInitialize() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
-        CommandScheduler.getInstance().schedule(shooterDefault);
+  @Test
+  public void verifyInitialize() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+    CommandScheduler.getInstance().schedule(shooterDefault);
 
-		// Verify that stop was called
-		verify(mockedShooter).stop();
+    // Verify that stop was called
+    verify(mockedShooter).stop();
 
-		// Clear the scheduler
-		TestWithScheduler.schedulerClear();
-     }
+    // Clear the scheduler
+    TestWithScheduler.schedulerClear();
+  }
 
-     @Test
-     public void verifyNoBalls() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
-        CommandScheduler.getInstance().schedule(shooterDefault);
+  @Test
+  public void verifyNoBalls() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+    CommandScheduler.getInstance().schedule(shooterDefault);
 
-		// Verify that stop is called when there are no balls
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(0);
+    // Verify that stop is called when there are no balls
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(0);
 
-        CommandScheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
 
-        verify(mockedShooter, atLeast(2)).stop();
+    verify(mockedShooter, atLeast(2)).stop();
 
-		// Clear the scheduler
-        TestWithScheduler.schedulerClear();
-     }
+    // Clear the scheduler
+    TestWithScheduler.schedulerClear();
+  }
 
-     @Test
-     public void verifyShooterShouldSpinUp() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
-        CommandScheduler.getInstance().schedule(shooterDefault);
+  @Test
+  public void verifyShooterShouldSpinUp() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+    CommandScheduler.getInstance().schedule(shooterDefault);
 
-        // Verify that it should not spin
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(1);
-        when(mockedShooter.shouldSpinUp()).thenReturn(false);
+    // Verify that it should not spin
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(1);
+    when(mockedShooter.shouldSpinUp()).thenReturn(false);
 
-        CommandScheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
 
-        verify(mockedShooter, atLeast(2)).stop();
+    verify(mockedShooter, atLeast(2)).stop();
 
-		// Clear the scheduler
-        TestWithScheduler.schedulerClear();
-     }
+    // Clear the scheduler
+    TestWithScheduler.schedulerClear();
+  }
 
-     @Test
-     public void verifyShooterSetRPM() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
-        CommandScheduler.getInstance().schedule(shooterDefault);
+  @Test
+  public void verifyShooterSetRPM() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+    CommandScheduler.getInstance().schedule(shooterDefault);
 
-        // Verify that the shooter spins
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(1);
-        when(mockedShooter.shouldSpinUp()).thenReturn(true);
+    // Verify that the shooter spins
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(1);
+    when(mockedShooter.shouldSpinUp()).thenReturn(true);
 
-        CommandScheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
 
-        verify(mockedShooter, times(1)).stop();
-        verify(mockedShooter).setRPM(anyDouble());
+    verify(mockedShooter, times(1)).stop();
+    verify(mockedShooter).setRPM(anyDouble());
 
-		// Clear the scheduler
-        TestWithScheduler.schedulerClear();
-     }
+    // Clear the scheduler
+    TestWithScheduler.schedulerClear();
+  }
 
-     @Test
-     public void verifyShooterDefaultEnd() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
-        CommandScheduler.getInstance().schedule(shooterDefault);
+  @Test
+  public void verifyShooterDefaultEnd() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+    CommandScheduler.getInstance().schedule(shooterDefault);
 
-        CommandScheduler.getInstance().cancel(shooterDefault);
+    CommandScheduler.getInstance().cancel(shooterDefault);
 
-        verify(mockedShooter, times(2)).stop();
+    verify(mockedShooter, times(2)).stop();
 
-		// Clear the scheduler
-        TestWithScheduler.schedulerClear();
-     }
+    // Clear the scheduler
+    TestWithScheduler.schedulerClear();
+  }
 
 //-------------------------------------------------------------------------------------------
 
-     @Test
-     public void verifyInit() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyInit() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.initialize();
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.initialize();
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyExecuteZeroBallsAndNoSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteZeroBallsAndNoSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(0);
-        when(mockedShooter.shouldSpinUp()).thenReturn(false);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(0);
+    when(mockedShooter.shouldSpinUp()).thenReturn(false);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyExecuteOneBallAndNoSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteOneBallAndNoSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(1);
-        when(mockedShooter.shouldSpinUp()).thenReturn(false);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(1);
+    when(mockedShooter.shouldSpinUp()).thenReturn(false);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyExecuteTwoBallsAndNoSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteTwoBallsAndNoSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(2);
-        when(mockedShooter.shouldSpinUp()).thenReturn(false);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(2);
+    when(mockedShooter.shouldSpinUp()).thenReturn(false);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyExecuteThreeBallsAndNoSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteThreeBallsAndNoSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(3);
-        when(mockedShooter.shouldSpinUp()).thenReturn(false);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(3);
+    when(mockedShooter.shouldSpinUp()).thenReturn(false);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyExecuteFourBallsAndNoSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteFourBallsAndNoSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(4);
-        when(mockedShooter.shouldSpinUp()).thenReturn(false);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(4);
+    when(mockedShooter.shouldSpinUp()).thenReturn(false);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyExecuteZeroBallsAndSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteZeroBallsAndSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(0);
-        when(mockedShooter.shouldSpinUp()).thenReturn(true);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(0);
+    when(mockedShooter.shouldSpinUp()).thenReturn(true);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyExecuteOneBallAndSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteOneBallAndSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(1);
-        when(mockedShooter.shouldSpinUp()).thenReturn(true);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(1);
+    when(mockedShooter.shouldSpinUp()).thenReturn(true);
 
-        verify(mockedShooter, times(0)).setRPM(anyDouble());
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).setRPM(anyDouble());
-     }
+    verify(mockedShooter, times(0)).setRPM(anyDouble());
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).setRPM(anyDouble());
+  }
 
-     @Test
-     public void verifyExecuteTwoBallsAndSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteTwoBallsAndSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(2);
-        when(mockedShooter.shouldSpinUp()).thenReturn(true);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(2);
+    when(mockedShooter.shouldSpinUp()).thenReturn(true);
 
-        verify(mockedShooter, times(0)).setRPM(anyDouble());
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).setRPM(anyDouble());
-     }
+    verify(mockedShooter, times(0)).setRPM(anyDouble());
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).setRPM(anyDouble());
+  }
 
-     @Test
-     public void verifyExecuteThreeBallsAndSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteThreeBallsAndSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(3);
-        when(mockedShooter.shouldSpinUp()).thenReturn(true);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(3);
+    when(mockedShooter.shouldSpinUp()).thenReturn(true);
 
-        verify(mockedShooter, times(0)).setRPM(anyDouble());
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).setRPM(anyDouble());
-     }
+    verify(mockedShooter, times(0)).setRPM(anyDouble());
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).setRPM(anyDouble());
+  }
 
-     @Test
-     public void verifyExecuteFourBallsAndSpin() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyExecuteFourBallsAndSpin() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        when(mockedElevator.getNumOfBallsInLift()).thenReturn(4);
-        when(mockedShooter.shouldSpinUp()).thenReturn(true);
+    when(mockedElevator.getNumOfBallsInLift()).thenReturn(4);
+    when(mockedShooter.shouldSpinUp()).thenReturn(true);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.execute();
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.execute();
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyEndTrue() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyEndTrue() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.end(true);
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.end(true);
+    verify(mockedShooter, times(1)).stop();
+  }
 
-     @Test
-     public void verifyEndFalse() {
-        ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
+  @Test
+  public void verifyEndFalse() {
+    ShooterDefault shooterDefault = new ShooterDefault(mockedShooter, mockedElevator);
 
-        verify(mockedShooter, times(0)).stop();
-        shooterDefault.end(false);
-        verify(mockedShooter, times(1)).stop();
-     }
+    verify(mockedShooter, times(0)).stop();
+    shooterDefault.end(false);
+    verify(mockedShooter, times(1)).stop();
+  }
 } 

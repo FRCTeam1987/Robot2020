@@ -5,58 +5,48 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.control_panel;
+package frc.robot.commands.climber;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ControlPanel;
+import frc.robot.subsystems.Climber;
 
-public class RunCP extends CommandBase {
+// =============================================================================
+// WARNING: This should only ever be bound to a "whileHeld" since it never ends.
+// =============================================================================
 
-  private ControlPanel m_cp;
-  private boolean hasRunB4;
-  private double m_startTime;
-  private double m_wait;
+public class Unspool extends CommandBase {
 
-  public RunCP(ControlPanel controlPanel) {
-    m_cp = controlPanel;
-    addRequirements(m_cp);
-    m_wait = 0.5;
+  private final Climber m_climber;
+
+  /**
+   * Creates a new Unspool.
+   */
+  public Unspool(final Climber climber) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    m_climber = climber;
+    addRequirements(m_climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hasRunB4 = m_cp.getHasRunBefore();
-    m_cp.deployCP();
-    // m_startTime = Timer.getFPGATimestamp();
-    if(hasRunB4 ? m_cp.shouldSpinToGameColor() : m_cp.shouldSpinCP3Times()){
-      if(hasRunB4){
-        m_cp.spinToGameColor();
-      } else{
-        m_cp.spin3Times();
-        m_cp.toggleHasRunBefore();
-      }
-    } else{
-      m_cp.setPercent(0.0);
-    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_climber.unspool();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_cp.setPercent(0.0);
-    m_cp.retractCP();
+    m_climber.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Timer.getFPGATimestamp() - m_startTime >= m_wait) && !m_cp.isOnCP() && (hasRunB4 ? m_cp.shouldSpinToGameColor() : m_cp.shouldSpinCP3Times()) ;
+    return false;
   }
 }
