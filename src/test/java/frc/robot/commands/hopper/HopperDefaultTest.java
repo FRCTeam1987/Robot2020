@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 // import org.powermock.core.classloadert.annotations.PrepareForTest;
 // import org.powermock.modules.junit4.PowerMockRunner;
 
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hopper;
 

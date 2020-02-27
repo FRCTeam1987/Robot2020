@@ -24,7 +24,7 @@ public class ClimberTest {
   private WPI_VictorSPX mockedWinchMaster;
   private WPI_VictorSPX mockedWinchSlave;
 
-    @Before
+  @Before
 	public void before() {
     mockedRetainingPin = mock(Solenoid.class);
     mockedWinchMaster = mock(WPI_VictorSPX.class);
@@ -78,11 +78,11 @@ public class ClimberTest {
     );
     verify(mockedWinchMaster, times(1)).set(0);
     climber.spoolUp();
-    verify(mockedWinchMaster, times(1)).set(0.25);
+    verify(mockedWinchMaster, times(1)).set(-1.0);
   }
 
   @Test
-  public void stopTest() {
+  public void stopTest() { // TODO
     Climber climber = new Climber(
       mockedRetainingPin,
       mockedWinchMaster,
@@ -96,7 +96,7 @@ public class ClimberTest {
   }
 
   @Test
-  public void unspoolTest() {
+  public void unspoolTest() { // TODO 
     Climber climber = new Climber(
       mockedRetainingPin,
       mockedWinchMaster,
@@ -120,7 +120,7 @@ public class ClimberTest {
     climber.stop();
     verify(mockedWinchMaster, times(1)).set(0);
     climber.spoolUp();
-    verify(mockedWinchMaster, times(1)).set(0.25);
+    verify(mockedWinchMaster, times(1)).set(-1.0);
     climber.stop();
     verify(mockedWinchMaster, times(2)).set(0);
   }

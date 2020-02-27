@@ -8,7 +8,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.DigitalDebouncer;
+import frc.robot.lib.DigitalDebouncer;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shooter;
 

@@ -10,7 +10,7 @@ package frc.robot.commands.hopper;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.DigitalDebouncer;
+import frc.robot.lib.DigitalDebouncer;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hopper;
 

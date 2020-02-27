@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -31,6 +33,8 @@ public class Climber extends SubsystemBase {
     m_lastSetPercent = 1;
     m_winchMaster.configFactoryDefault();
     m_winchSlave.configFactoryDefault();
+    // TODO see if this also inverts the slave too -> m_winchMaster.setInverted(true);
+
     m_winchSlave.follow(m_winchMaster);
     stop();
     pinInsert();
@@ -53,7 +57,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void spoolUp() {
-    setWinch(0.25);
+    setWinch(-1.0);
   }
 
   public void stop() {
@@ -61,7 +65,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void unspool() {
-    setWinch(-0.25);
+    setWinch(.25);
   }
 
   @Override

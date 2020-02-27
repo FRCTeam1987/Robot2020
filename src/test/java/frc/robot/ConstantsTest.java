@@ -8,6 +8,9 @@
 package frc.robot;
 
 import org.junit.*;
+
+import frc.robot.lib.InterpolatingDouble;
+
 import static org.junit.Assert.*;
 
 /**
@@ -18,9 +21,6 @@ public class ConstantsTest {
     @Test
     public void interpolateTest() {
         final double value = Constants.kDistanceToShooterSpeed.getInterpolated(new InterpolatingDouble(-6.0)).value;
-        System.out.println("--------");
-        System.out.println(value);
-        System.out.println("--------");
         assertTrue(value > 3850 && value < 4100);
     }
 }

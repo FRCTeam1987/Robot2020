@@ -10,8 +10,8 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.DigitalDebouncer;
-import frc.robot.InterpolatingDouble;
+import frc.robot.lib.DigitalDebouncer;
+import frc.robot.lib.InterpolatingDouble;
 import frc.robot.Util;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Shooter;
@@ -65,8 +65,8 @@ public class ShooterDefault extends CommandBase {
       //   }
       // }
       // m_rpm = 3311 + (-69.1 * m_ty) + Math.pow(3.1,2);
-      // m_shooter.setRPM(Constants.kDistanceToShooterSpeed.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value); // Dynamically set RPM based on distance... when we get to that point
-      m_shooter.setRPM(3225);
+      m_shooter.setRPM(Constants.kDistanceToShooterSpeed.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value); // Dynamically set RPM based on distance... when we get to that point
+      // m_shooter.setRPM(3225);
       SmartDashboard.putNumber("default shooter rpm", m_rpm);
     } else {
       m_shooter.stop();

@@ -11,6 +11,8 @@ import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.lib.InterpolatingDouble;
+import frc.robot.lib.InterpolatingTreeMap;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -185,6 +187,8 @@ public final class Constants {
         kDistanceToShooterSpeed.put(new InterpolatingDouble(ty18), new InterpolatingDouble(rpm18));
     }
 
+    public static final double talonFXTicksPerRevolution = 2048.0;
+
     public static class Climber {
         public static class Actuators {
             public static class Motors {
@@ -197,9 +201,27 @@ public final class Constants {
         }
     }
 
+    public static class Drive {
+        public static class Controls {
+            public static final double autoMaxVoltage = 10;
+            public static final double aVoltSecondsSquaredPerMeter = 0.313;
+            public static final double maxAccelerationMetersPerSecondSquared = 1.5;
+            public static final double maxSpeedMetersPerSecond = 1.5;
+            public static final double pDriveVel = 0.44;
+            public static final double postEncoderGearing = 9.091;
+            public static final double sVolts = 0.399;
+            public static final double ticksPerRevolution = talonFXTicksPerRevolution * postEncoderGearing;
+            public static final double trackWidth = 0.7021;
+            public static final double vVoltSecondsPerMeter = 1.99;
+            public static final double wheelDiameter = 0.1524;
+            public static final double wheelCircumference = wheelDiameter * Math.PI;
+        }
+    }
+
     public static class Elevator {
         public static final int maxNumberOfBallsWhileDown = 1;
         public static final int maxNumberOfBallsWhileUp = 3;
+        public static final int startingBallCount = 3;
     }
 
     public static class PDPMap {

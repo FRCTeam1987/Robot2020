@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
@@ -17,6 +16,7 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,17 +24,16 @@ import frc.robot.Constants;
 
 public class ControlPanel extends SubsystemBase {
   
-  private final VictorSPX cpMotor;
+  private final WPI_VictorSPX cpMotor;
   private final ColorSensorV3 m_colorSensor;
   private final ColorMatch m_colorMatcher;
-  private final DoubleSolenoid deploy;
+  private final DoubleSolenoid m_piston;
   private String targetColor;
   private Color initColor;
   private Color lastColor;
   private int colorCount;
   private String expectedColor;
   private ColorMatchResult currentColor;
-  private boolean hasRunBefore;
 
 // TODO CP cant be up if elevator is up, elevator can't be up when CP is up
 // TODO make it so the CP doesn't retract until the robot has backed away
@@ -44,11 +43,11 @@ public class ControlPanel extends SubsystemBase {
   public ControlPanel() {
     m_colorSensor = new ColorSensorV3(Constants.i2cPort);
     m_colorMatcher = new ColorMatch();
-    deploy = new DoubleSolenoid(Constants.controlPanelDeploy, Constants.controlPanelRetract);
+    m_piston = new DoubleSolenoid(Constants.controlPanelDeploy, Constants.controlPanelRetract);
     colorCount = 0;
     expectedColor = "";
     targetColor = "";
-    hasRunBefore = false;
+    m_piston.set(Value.kReverse);
 
     m_colorMatcher.addColorMatch(Constants.kBlueTarget);
     m_colorMatcher.addColorMatch(Constants.kGreenTarget);
@@ -58,34 +57,28 @@ public class ControlPanel extends SubsystemBase {
     initColor = null;
 
     cpMotor = new WPI_VictorSPX(Constants.controlPanelMotorID);
+
+    // addChild("motor", cpMotor);
+
+
+    cpMotor.configFactoryDefault();
     cpMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void deployCP(){
-    deploy.set(DoubleSolenoid.Value.kForward);
+    m_piston.set(DoubleSolenoid.Value.kForward);
   }
 
   public void retractCP(){
-    deploy.set(DoubleSolenoid.Value.kReverse);
+    m_piston.set(DoubleSolenoid.Value.kReverse);
   }
 
   public boolean isOnCP(){
-    if(m_colorSensor.getProximity() != 0){ 
-      return true;
+
+    if(m_colorSensor.getProximity() > 200){ 
+      ;
     }
     return false;
-  }
-
-  public void toggleHasRunBefore(){
-    if(hasRunBefore){ //btw I know you don't need the curly brackets for 1 liners but it looks weird
-      hasRunBefore = false;
-    } else{
-      hasRunBefore = true;
-    }
-  }
-
-  public boolean getHasRunBefore(){
-    return hasRunBefore;
   }
 
   public void setRPM(double rpm) {
@@ -146,14 +139,17 @@ public class ControlPanel extends SubsystemBase {
   }
 
   public void spin3Times() {
-    initColor = lastColor = getCurrentColor();
-    calculateExpectedColor(initColor);
+    if(m_colorSensor.getProximity() >200){
+      initColor = lastColor = getCurrentColor();
+      calculateExpectedColor(initColor);
+    }
     resetColorCount();
     setPercent(-0.50);
   }
 
   public void setPercent(double percent) {
-    cpMotor.set(ControlMode.PercentOutput, percent);
+    // cpMotor.set(ControlMode.PercentOutput, percent);
+    cpMotor.set(percent);
   }
 
   public void calculateExpectedColor(Color color) {
@@ -200,9 +196,9 @@ public class ControlPanel extends SubsystemBase {
         lastColor = currentColor;
         calculateExpectedColor(lastColor);
       }
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   // Return true if wheel needs to keep spinning
@@ -278,9 +274,11 @@ public class ControlPanel extends SubsystemBase {
 
     SmartDashboard.putNumber("color count", colorCount);
     SmartDashboard.putString("current color", currentColorString);
-    SmartDashboard.putString("expected color", expectedColor);
-    SmartDashboard.putString("target color", targetColor);
-    SmartDashboard.putNumber("Color Confidece", confidenceLevel);
+    // SmartDashboard.putString("expected color", expectedColor);
+    // SmartDashboard.putString("target color", targetColor);
+    // SmartDashboard.putNumber("Color Confidece", confidenceLevel);
+    SmartDashboard.putNumber("CP prox value", m_colorSensor.getProximity());
+
     // SmartDashboard.putNumber("Red", cColor.color.red);
     // SmartDashboard.putNumber("Green", cColor.color.green);
     // SmartDashboard.putNumber("Blue", cColor.color.blue);

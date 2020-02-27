@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.DigitalDebouncer;
+import frc.robot.lib.DigitalDebouncer;
 
 public class Elevator extends SubsystemBase {
 
@@ -32,7 +32,7 @@ public class Elevator extends SubsystemBase {
     lowProx = new DigitalInput(0);
     highProx = new DigitalInput(1);
     entranceDebouncer = new DigitalDebouncer(.25);
-    ballsInLift = 0;
+    ballsInLift = Constants.Elevator.startingBallCount;
     m_pdp = pdp;
 
     setLiftUp();

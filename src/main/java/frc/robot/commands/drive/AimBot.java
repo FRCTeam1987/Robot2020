@@ -8,8 +8,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.DigitalDebouncer;
-import frc.robot.RunningAverage;
+import frc.robot.lib.DigitalDebouncer;
 import frc.robot.Util;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Shooter;
@@ -67,7 +66,7 @@ public class AimBot extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_drive.tankDrive(0, 0);
-    // m_shooter.turnOffLEDs();
+    m_shooter.turnOffLEDs();
   }
 
   // Returns true when the command should end.

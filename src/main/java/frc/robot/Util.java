@@ -9,6 +9,15 @@ package frc.robot;
 
 
 public class Util {
+
+    public static double ctreVelocityToLinearVelocity(final double ctreVelocity, final double ticksPerRevolution, final double circumference) {
+        return ctreVelocityToRps(ctreVelocity, ticksPerRevolution) * circumference;
+    }
+
+    public static double ctreVelocityToRps(final double ctreVelocity, final double ticksPerRevolution) {
+        return ctreVelocity * 10.0 / ticksPerRevolution;
+    }
+
     // TODO should return int if ticks
     public static double wheelRotationsToTicks(final double wheelRotations, final double reduction) {
         return (int)(wheelRotations * Constants.ticksPerRotation * reduction);
@@ -16,5 +25,9 @@ public class Util {
 
     public static boolean isWithinTolerance(double currentValue, double targetValue, double tolerance){
         return Math.abs(currentValue - targetValue) <= tolerance;
+    }
+
+    public static double ticksToDistance(final double ticks, final double ticksPerRevolution, final double circumference) {
+        return ticks / ticksPerRevolution * circumference;
     }
 }
