@@ -47,7 +47,7 @@ public class ControlPanel extends SubsystemBase {
     colorCount = 0;
     expectedColor = "";
     targetColor = "";
-    m_piston.set(Value.kReverse);
+    retractCP();
 
     m_colorMatcher.addColorMatch(Constants.kBlueTarget);
     m_colorMatcher.addColorMatch(Constants.kGreenTarget);

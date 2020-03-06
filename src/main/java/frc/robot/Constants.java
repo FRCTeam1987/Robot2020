@@ -123,7 +123,7 @@ public final class Constants {
         public final static String gameColorTargetRed = "B";
 
     // Shooter
-    public final static double shooterAngleTolerance = 2.0;
+    public final static double shooterAngleTolerance = 1.0;
     public final static double shooterAngleErrorToSpinUp = 5.0;
     public final static double shooterRPMTolerance = 25.0;
 
@@ -152,7 +152,7 @@ public final class Constants {
     public final static double rpm4 = 3650;
     public final static double rpm5 = 3575;
     public final static double rpm6 = 3550;
-    public final static double rpm7 = 3525;
+    public final static double rpm7 = 3485;
     public final static double rpm8 = 3420;
     public final static double rpm9 = 3325;
     public final static double rpm10 = 3325;
@@ -204,15 +204,17 @@ public final class Constants {
     public static class Drive {
         public static class Controls {
             public static final double autoMaxVoltage = 10;
-            public static final double aVoltSecondsSquaredPerMeter = 0.313;
+            public static final double aVoltSecondsSquaredPerMeter = 0.283; // 0.313
             public static final double maxAccelerationMetersPerSecondSquared = 1.5;
             public static final double maxSpeedMetersPerSecond = 1.5;
-            public static final double pDriveVel = 0.44;
+            public static final double pDriveVel = 0.35;    // 0.44
             public static final double postEncoderGearing = 9.091;
-            public static final double sVolts = 0.399;
+            public static final double ramseteB = 2.0;
+            public static final double ramseteZeta = 0.7;
+            public static final double sVolts = 0.404;  // 0.399
             public static final double ticksPerRevolution = talonFXTicksPerRevolution * postEncoderGearing;
             public static final double trackWidth = 0.7021;
-            public static final double vVoltSecondsPerMeter = 1.99;
+            public static final double vVoltSecondsPerMeter = 2.05; // 1.99
             public static final double wheelDiameter = 0.1524;
             public static final double wheelCircumference = wheelDiameter * Math.PI;
         }

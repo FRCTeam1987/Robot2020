@@ -22,12 +22,13 @@ public class Shoot3AndMove extends SequentialCommandGroup {
   
   public Shoot3AndMove(Drive drive, Shooter shooter) {
     super(
-      new WaitCommand(1),
+      new WaitCommand(3.0),
+      
       new ParallelRaceGroup(
         new AimBot(shooter, drive, false),
-        new WaitCommand(2)
+        new WaitCommand(3.0)
       ),
-      new TankDriveInstant(drive, .5)
+      new TankDriveInstant(drive, -.5)
         .andThen(new WaitCommand(1))
         .andThen(new TankDriveInstant(drive, 0))
     );

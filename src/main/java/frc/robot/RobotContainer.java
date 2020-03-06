@@ -23,13 +23,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.XboxDPad.Direction;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.StopAll;
 import frc.robot.commands.auto.Shoot3AndMove;
+import frc.robot.commands.climber.InsertPin;
 import frc.robot.commands.climber.PullPin;
 import frc.robot.commands.climber.SpoolUp;
 import frc.robot.commands.climber.Unspool;
 import frc.robot.commands.collector.DeployCollector;
 import frc.robot.commands.collector.RetractCollector;
 import frc.robot.commands.collector.SetCollectorPercent;
+import frc.robot.commands.collector.ToggleDeployment;
 import frc.robot.commands.control_panel.FindColor;
 import frc.robot.commands.control_panel.LowerCP;
 import frc.robot.commands.control_panel.Spin3Times;
@@ -50,6 +53,7 @@ import frc.robot.commands.hopper.HopperDefault;
 import frc.robot.commands.hopper.RunHopperForward;
 import frc.robot.commands.hopper.RunHopperReverse;
 import frc.robot.commands.hopper.SetHopperPercent;
+import frc.robot.commands.shooter.SetRPMreal;
 import frc.robot.commands.shooter.SetShooterPercent;
 import frc.robot.commands.shooter.ShooterDefault;
 import frc.robot.subsystems.Climber;
@@ -82,13 +86,15 @@ public class RobotContainer {
   private final JoystickButton autoAim;
   private final JoystickButton climberRelease;
   private final JoystickButton climberPull;
+  private final POVButton actuateCollector;
   private final POVButton coBallCounterDecrement;
   private final POVButton coBallCounterIncrement;
   private final POVButton coBallCounterReset;
   private final JoystickButton coFlowReverse;
   private final JoystickButton coFlowForward;
   private final JoystickButton coClimberSpoolUp;
-  private final JoystickButton coClimberUnspool;
+  // private final JoystickButton coClimberUnspool;
+  private final JoystickButton coStopAll;
   // private final JoystickButton startCompressor;
   // private final JoystickButton stopCompressor;
 
@@ -125,14 +131,17 @@ public class RobotContainer {
     autoAim = new JoystickButton(driver, XboxController.Button.kBack.value);
     climberRelease = new JoystickButton(driver, XboxController.Button.kStart.value);
     climberPull = new JoystickButton(driver, XboxController.Button.kBumperRight.value);
+    actuateCollector = new POVButton(driver,XboxDPad.Direction.Down.get());
 
     coBallCounterDecrement = new POVButton(coDriver, XboxDPad.Direction.Down.get());
     coBallCounterIncrement = new POVButton(coDriver, XboxDPad.Direction.Up.get());
     coBallCounterReset = new POVButton(coDriver, XboxDPad.Direction.Right.get());
     coClimberSpoolUp = new JoystickButton(coDriver, XboxController.Button.kBumperRight.value);
-    coClimberUnspool = new JoystickButton(coDriver, XboxController.Button.kBumperLeft.value);
+    // coClimberUnspool = new JoystickButton(coDriver, XboxController.Button.kBumperLeft.value); can't do this mid-match because of the ratchet. design must be changed if this is needed
     coFlowReverse = new JoystickButton(coDriver, XboxController.Button.kA.value);
     coFlowForward = new JoystickButton(coDriver, XboxController.Button.kY.value);
+    coStopAll = new JoystickButton(coDriver, XboxController.Button.kBack.value);
+
 
     // Configure the button bindings
     configureButtonBindings();
@@ -168,6 +177,7 @@ public class RobotContainer {
     autoAim.whileHeld(new AimBot(m_shooter, m_drive, false));
     climberRelease.whenPressed(new PullPin(m_climber));
     climberPull.whileHeld(new SpoolUp(m_climber));
+    actuateCollector.whenPressed(new ToggleDeployment(m_collector));
     // controlPanel.whenPressed(new );
 
     // secondary driver
@@ -178,7 +188,7 @@ public class RobotContainer {
     coBallCounterIncrement.whenPressed(new BallCounterIncrement(m_elevator));
     coBallCounterReset.whenPressed(new BallCounterReset(m_elevator));
     coClimberSpoolUp.whileHeld(new SpoolUp(m_climber));
-    coClimberUnspool.whileHeld(new SpoolUp(m_climber));
+    // coClimberUnspool.whileHeld(new Unspool(m_climber));
     coFlowForward.whileHeld(new ParallelCommandGroup(
       new RunHopperForward(m_hopper),
       new RunElevatorForward(m_elevator))
@@ -187,6 +197,7 @@ public class RobotContainer {
       new RunHopperReverse(m_hopper),
       new RunElevatorReverse(m_elevator))
     );
+    coStopAll.whenPressed(new StopAll(m_hopper, m_elevator, m_collector));
   }
 
   private void configureShuffleboard() {
@@ -208,8 +219,11 @@ public class RobotContainer {
     SmartDashboard.putData("Lower Elevator", new SetLiftDown(m_elevator));
     SmartDashboard.putData("Raise Elevator", new SetLiftUp(m_elevator));
     SmartDashboard.putData("AimBot", new AimBot(m_shooter, m_drive, true));
-    SmartDashboard.putData("Index", new Index(m_elevator, m_hopper));
+    // SmartDashboard.putData("Index", new Index(m_elevator, m_hopper));
     SmartDashboard.putData("Shoot", new Shoot(m_shooter, m_elevator, m_hopper));
+    SmartDashboard.putData("Retract climber pin", new PullPin(m_climber));
+    SmartDashboard.putData("Extend climber pin", new InsertPin(m_climber));
+    SmartDashboard.putData("Set Shooter RPM", new SetRPMreal(m_shooter, 1000));
     // SmartDashboard.putData("lower CP", new LowerCP(m_controlPanel));
   }
 

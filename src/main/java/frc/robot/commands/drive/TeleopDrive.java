@@ -58,9 +58,7 @@ public class TeleopDrive extends CommandBase {
       aimAssist = Math.copySign(Math.max(Math.abs(angleError) / 25.0 * 0.7, aimAssistMinMove), -angleError);
       m_driveSubsystem.arcadeDrive(move, aimAssist);
       return;
-    } //else {
-    //   // m_shooter.turnOffLEDs();
-    // }
+    }
 
     // TODO this is to try out, remove this if we don't want it
     if (shouldCurvatureDrive) {

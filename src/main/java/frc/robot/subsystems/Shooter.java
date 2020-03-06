@@ -61,13 +61,14 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setRPM(final double rpm) {
-    SmartDashboard.putNumber("(set value) shooter rpm", rpm);
-    if (rpmSetPoint == rpm) { // don't set the same RPM again if it's been set to something close enough already
+    SmartDashboard.putNumber("(attemped) shooter rpm setpoint", rpm);
+    if (Util.isWithinTolerance(rpm, rpmSetPoint, Constants.shooterRPMTolerance)){
       return;
     }
     double velocity = rpm * Constants.ticksPerRotation / Constants.milliPerMin; //1,000ms per sec, but robot cares about per 100ms, so then 60 sec/min 
     master.set(TalonFXControlMode.Velocity, velocity);
     rpmSetPoint = rpm;
+    SmartDashboard.putNumber("(actual) shooter rpm setpoint", rpm);
   }
 
   public double getRPM(){

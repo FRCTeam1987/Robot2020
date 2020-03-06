@@ -68,9 +68,7 @@ public class Collector extends SubsystemBase {
   // TODO implemet setting an RPM if using the pid controller, otherwise remove the pid controller
 
   public void setNeoPercent(double percent){
-    m_neo.set(percent); //TODO (see comment below) either wiring, build or programmers need to properly do this
-    //swapped master and slave IDs cuz front collector (master) was removed, so this was inverted temporarily until it's re-wired 
-    //properly, build puts back the collector, or properly changed in code
+    m_neo.set(percent);
   }
 
   public void collectorOut(){

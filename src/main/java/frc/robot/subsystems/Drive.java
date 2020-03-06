@@ -211,14 +211,14 @@ public class Drive extends SubsystemBase {
       distanceLeft,
       distanceRight
     );
-
-    SmartDashboard.putNumber("drive_heading", heading);
-    SmartDashboard.putNumber("drive_dist_left", distanceLeft);
-    SmartDashboard.putNumber("drive_dist_right", distanceRight);
-    SmartDashboard.putNumber("drive_vel_left", wheelSpeeds.leftMetersPerSecond);
-    SmartDashboard.putNumber("drive_vel_right", wheelSpeeds.rightMetersPerSecond);
-    var translation = m_odometry.getPoseMeters().getTranslation();
-    SmartDashboard.putNumber("drive_odometry_x", translation.getX());
-    SmartDashboard.putNumber("drive_odometry_y", translation.getY());
+ // TODO add these back for atuo making
+    // SmartDashboard.putNumber("drive_heading", heading);
+    // SmartDashboard.putNumber("drive_dist_left", distanceLeft);
+    // SmartDashboard.putNumber("drive_dist_right", distanceRight);
+    // SmartDashboard.putNumber("drive_vel_left", wheelSpeeds.leftMetersPerSecond);
+    // SmartDashboard.putNumber("drive_vel_right", wheelSpeeds.rightMetersPerSecond);
+    // var translation = m_odometry.getPoseMeters().getTranslation();
+    // SmartDashboard.putNumber("drive_odometry_x", translation.getX());
+    // SmartDashboard.putNumber("drive_odometry_y", translation.getY());
   }
 }
