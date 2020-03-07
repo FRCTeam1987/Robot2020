@@ -132,7 +132,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void reverse() {
-    setPercent(-1);
+    setPercent(-0.75);
   }
 
   public void stop() {
@@ -141,6 +141,10 @@ public class Elevator extends SubsystemBase {
 
   public boolean hasMaxNumberOfBalls(){
     return getNumOfBallsInLift() >= getMaxAllowableNumberOfBalls();
+  }
+
+  public boolean canGoDown(){
+    return getNumOfBallsInLift() > 1;
   }
 
   @Override

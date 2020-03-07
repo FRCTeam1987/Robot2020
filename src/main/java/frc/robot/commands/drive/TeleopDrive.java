@@ -45,7 +45,7 @@ public class TeleopDrive extends CommandBase {
   @Override
   public void execute() {
     // TODO fix move negative forward
-    double move = (m_driver.getTriggerAxis(Hand.kRight) - m_driver.getTriggerAxis(Hand.kLeft)) * -1;
+    double move = m_driver.getTriggerAxis(Hand.kRight) - m_driver.getTriggerAxis(Hand.kLeft);
     double rotate = -m_driver.getX(Hand.kLeft); //invert turning
     // m_shooter.turnOnLEDs();
 

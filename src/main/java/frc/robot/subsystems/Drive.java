@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -29,9 +30,9 @@ public class Drive extends SubsystemBase {
 
   // TODO make LazyTalonFX - see Jon
   private final WPI_TalonFX leftMaster;
-  private final WPI_TalonFX leftSlave;
+  private final TalonFX leftSlave;
   private final WPI_TalonFX rightMaster;
-  private final WPI_TalonFX rightSlave;
+  private final TalonFX rightSlave;
 
   private TalonFXSensorCollection m_leftSensorCollection;
   private TalonFXSensorCollection m_rightSensorCollection;
@@ -49,9 +50,9 @@ public class Drive extends SubsystemBase {
    */
   public Drive() {
     leftMaster = new WPI_TalonFX(Constants.leftMasterID);
-    leftSlave = new WPI_TalonFX(Constants.leftSlaveID);
+    leftSlave = new TalonFX(Constants.leftSlaveID);
     rightMaster = new WPI_TalonFX(Constants.rightMasterID);
-    rightSlave = new WPI_TalonFX(Constants.rightSlaveID);
+    rightSlave = new TalonFX(Constants.rightSlaveID);
     robotDrive = new DifferentialDrive(leftMaster, rightMaster);
     ahrs = new AHRS(Port.kMXP);
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
@@ -104,7 +105,7 @@ public class Drive extends SubsystemBase {
 
   public void driveTankVolts(final double left, final double right) {
     leftMaster.setVoltage(left);
-    rightMaster.setVoltage(right);
+    rightMaster.setVoltage(-right);
     robotDrive.feed();
   }
 
@@ -212,13 +213,13 @@ public class Drive extends SubsystemBase {
       distanceRight
     );
  // TODO add these back for atuo making
-    // SmartDashboard.putNumber("drive_heading", heading);
-    // SmartDashboard.putNumber("drive_dist_left", distanceLeft);
-    // SmartDashboard.putNumber("drive_dist_right", distanceRight);
-    // SmartDashboard.putNumber("drive_vel_left", wheelSpeeds.leftMetersPerSecond);
-    // SmartDashboard.putNumber("drive_vel_right", wheelSpeeds.rightMetersPerSecond);
-    // var translation = m_odometry.getPoseMeters().getTranslation();
-    // SmartDashboard.putNumber("drive_odometry_x", translation.getX());
-    // SmartDashboard.putNumber("drive_odometry_y", translation.getY());
+    SmartDashboard.putNumber("drive_heading", heading);
+    SmartDashboard.putNumber("drive_dist_left", distanceLeft);
+    SmartDashboard.putNumber("drive_dist_right", distanceRight);
+    SmartDashboard.putNumber("drive_vel_left", wheelSpeeds.leftMetersPerSecond);
+    SmartDashboard.putNumber("drive_vel_right", wheelSpeeds.rightMetersPerSecond);
+    var translation = m_odometry.getPoseMeters().getTranslation();
+    SmartDashboard.putNumber("drive_odometry_x", translation.getX());
+    SmartDashboard.putNumber("drive_odometry_y", translation.getY());
   }
 }

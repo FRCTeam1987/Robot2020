@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -22,13 +23,16 @@ import frc.robot.Util;
 public class Shooter extends SubsystemBase {
   
   private final WPI_TalonFX master;
-  private final WPI_TalonFX slave;
+  private final TalonFX slave;
 
   private double rpmSetPoint;
 
+  private boolean isFarShot;
+
+
   public Shooter() {
     master = new WPI_TalonFX(Constants.shooterMasterID);
-    slave = new WPI_TalonFX(Constants.shooterSlaveID);
+    slave = new TalonFX(Constants.shooterSlaveID);
 
     master.configFactoryDefault();
     master.configOpenloopRamp(0.5);
@@ -48,7 +52,9 @@ public class Shooter extends SubsystemBase {
     stop();
 
     addChild("master", master);
-    addChild("slave", slave);
+    // addChild("slave", slave);
+
+    isFarShot = false;
   }
 
   public boolean canShoot() {
@@ -110,6 +116,19 @@ public class Shooter extends SubsystemBase {
     return Util.isWithinTolerance(getRPM(), rpmSetPoint, Constants.shooterRPMTolerance);
   }
 
+  public void toggleIsFarShot(){
+    isFarShot = !isFarShot;
+    if(isFarShot){
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+    } else{
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    }
+  }
+
+  public boolean getIsFarShot(){
+    return isFarShot;
+  }
+
   public void turnOnLEDs(){
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
   }
@@ -129,3 +148,4 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Shooter RPM", getRPM());
   }
 }
+

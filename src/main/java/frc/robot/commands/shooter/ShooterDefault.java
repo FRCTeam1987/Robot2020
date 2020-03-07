@@ -64,8 +64,11 @@ public class ShooterDefault extends CommandBase {
       //     topWasTripped = topIsTripped;
       //   }
       // }
-      // m_rpm = 3311 + (-69.1 * m_ty) + Math.pow(3.1,2);
-      m_shooter.setRPM(Constants.kDistanceToShooterSpeed.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value); // Dynamically set RPM based on distance... when we get to that point
+      if(m_shooter.getIsFarShot()){
+        m_shooter.setRPM(Constants.kDistanceToShooterSpeedFar.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value);
+      } else{
+        m_shooter.setRPM(Constants.kDistanceToShooterSpeedClose.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value);
+      }
       // m_shooter.setRPM(3225);
       SmartDashboard.putNumber("default shooter rpm", m_rpm);
     } else {

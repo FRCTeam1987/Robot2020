@@ -25,6 +25,8 @@ import frc.robot.XboxDPad.Direction;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.StopAll;
 import frc.robot.commands.auto.Shoot3AndMove;
+import frc.robot.commands.auto.TestDrive;
+import frc.robot.commands.auto.TestRamsete;
 import frc.robot.commands.climber.InsertPin;
 import frc.robot.commands.climber.PullPin;
 import frc.robot.commands.climber.SpoolUp;
@@ -56,6 +58,7 @@ import frc.robot.commands.hopper.SetHopperPercent;
 import frc.robot.commands.shooter.SetRPMreal;
 import frc.robot.commands.shooter.SetShooterPercent;
 import frc.robot.commands.shooter.ShooterDefault;
+import frc.robot.commands.shooter.ToggleFarShot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.ControlPanel;
@@ -93,6 +96,7 @@ public class RobotContainer {
   private final JoystickButton coFlowReverse;
   private final JoystickButton coFlowForward;
   private final JoystickButton coClimberSpoolUp;
+  private final JoystickButton coToggleFarShot;
   // private final JoystickButton coClimberUnspool;
   private final JoystickButton coStopAll;
   // private final JoystickButton startCompressor;
@@ -141,12 +145,21 @@ public class RobotContainer {
     coFlowReverse = new JoystickButton(coDriver, XboxController.Button.kA.value);
     coFlowForward = new JoystickButton(coDriver, XboxController.Button.kY.value);
     coStopAll = new JoystickButton(coDriver, XboxController.Button.kBack.value);
+    coToggleFarShot = new JoystickButton(coDriver, XboxController.Button.kB.value); // TODO make sure Austin is OK with this button's mapping
 
 
     // Configure the button bindings
     configureButtonBindings();
     configureShuffleboard();
     configureDefaultCommands();
+  }
+
+  public XboxController getDriver(){
+    return driver;
+  }
+
+  public XboxController getCoDriver(){
+    return coDriver;
   }
 
   /**
@@ -198,6 +211,7 @@ public class RobotContainer {
       new RunElevatorReverse(m_elevator))
     );
     coStopAll.whenPressed(new StopAll(m_hopper, m_elevator, m_collector));
+    coToggleFarShot.whenPressed(new ToggleFarShot(m_shooter));
   }
 
   private void configureShuffleboard() {
@@ -224,6 +238,7 @@ public class RobotContainer {
     SmartDashboard.putData("Retract climber pin", new PullPin(m_climber));
     SmartDashboard.putData("Extend climber pin", new InsertPin(m_climber));
     SmartDashboard.putData("Set Shooter RPM", new SetRPMreal(m_shooter, 1000));
+    SmartDashboard.putBoolean("isFarShot", m_shooter.getIsFarShot());
     // SmartDashboard.putData("lower CP", new LowerCP(m_controlPanel));
   }
 
@@ -235,6 +250,10 @@ public class RobotContainer {
     m_hopper.setDefaultCommand(new HopperDefault(m_hopper, m_elevator));
   }
 
+  public void autoInit(){
+    m_elevator.setLiftDown();
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -242,6 +261,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() { //TODO Look at this m_autoCommand thing in the return and do it right
     // An ExampleCommand will run in autonomous
-    return new Shoot3AndMove(m_drive, m_shooter);
+    // return new Shoot3AndMove(m_drive, m_shooter);
+    return new TestRamsete(m_drive);
+  }
+
+  public void disabledInit(){
+    m_drive.setBrake();
   }
 }

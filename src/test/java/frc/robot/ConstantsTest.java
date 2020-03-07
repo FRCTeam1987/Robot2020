@@ -20,7 +20,7 @@ public class ConstantsTest {
 
     @Test
     public void interpolateTest() {
-        final double value = Constants.kDistanceToShooterSpeed.getInterpolated(new InterpolatingDouble(-6.0)).value;
+        final double value = Constants.kDistanceToShooterSpeedClose.getInterpolated(new InterpolatingDouble(-6.0)).value;
         assertTrue(value > 3850 && value < 4100);
     }
 }
