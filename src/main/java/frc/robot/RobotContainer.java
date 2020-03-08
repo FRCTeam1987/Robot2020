@@ -18,10 +18,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.XboxDPad.Direction;
+import frc.robot.commands.Rumble;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.StopAll;
 import frc.robot.commands.auto.Shoot3AndMove;
@@ -68,15 +71,17 @@ import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Shooter;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // private final ExampleCommand m_autoCommand = new
+  // ExampleCommand(m_exampleSubsystem);
 
   private final XboxController driver;
   private final XboxController coDriver;
@@ -107,46 +112,45 @@ public class RobotContainer {
   private final Drive m_drive = new Drive();
   private final Shooter m_shooter = new Shooter();
   private final Collector m_collector = new Collector();
-  private final Hopper m_hopper = new Hopper(m_pdp,
-    new WPI_VictorSPX(Constants.hopperMotorID)
-  );
+  private final Hopper m_hopper = new Hopper(m_pdp, new WPI_VictorSPX(Constants.hopperMotorID));
   private final Elevator m_elevator = new Elevator(m_pdp);
   private final ControlPanel m_controlPanel = new ControlPanel();
-  private final Climber m_climber = new Climber(
-    new Solenoid(Constants.Climber.Actuators.Solenoids.releasePinID),
-    new WPI_VictorSPX(Constants.Climber.Actuators.Motors.winchMaster),
-    new WPI_VictorSPX(Constants.Climber.Actuators.Motors.winchSlave)
-  );
+  private final Climber m_climber = new Climber(new Solenoid(Constants.Climber.Actuators.Solenoids.releasePinID),
+      new WPI_VictorSPX(Constants.Climber.Actuators.Motors.winchMaster),
+      new WPI_VictorSPX(Constants.Climber.Actuators.Motors.winchSlave));
 
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    
+
     driver = new XboxController(Constants.driverID);
     coDriver = new XboxController(Constants.coDriverID);
 
     collect = new JoystickButton(driver, XboxController.Button.kX.value);
     shoot = new JoystickButton(driver, XboxController.Button.kY.value);
     toggleTrenchConfig = new JoystickButton(driver, XboxController.Button.kB.value);
-    controlPanelSpin = new POVButton(driver, XboxDPad.Direction.Left.get()); // TODO make smart dashboard button to rest if even works :`(
+    controlPanelSpin = new POVButton(driver, XboxDPad.Direction.Left.get()); // TODO make smart dashboard button to rest
+                                                                             // if even works :`(
     controlPanelFind = new POVButton(driver, XboxDPad.Direction.Right.get());
     runCollectorMotors = new JoystickButton(driver, XboxController.Button.kStickRight.value);
     autoAim = new JoystickButton(driver, XboxController.Button.kBack.value);
     climberRelease = new JoystickButton(driver, XboxController.Button.kStart.value);
     climberPull = new JoystickButton(driver, XboxController.Button.kBumperRight.value);
-    actuateCollector = new POVButton(driver,XboxDPad.Direction.Down.get());
+    actuateCollector = new POVButton(driver, XboxDPad.Direction.Down.get());
 
     coBallCounterDecrement = new POVButton(coDriver, XboxDPad.Direction.Down.get());
     coBallCounterIncrement = new POVButton(coDriver, XboxDPad.Direction.Up.get());
     coBallCounterReset = new POVButton(coDriver, XboxDPad.Direction.Right.get());
     coClimberSpoolUp = new JoystickButton(coDriver, XboxController.Button.kBumperRight.value);
-    // coClimberUnspool = new JoystickButton(coDriver, XboxController.Button.kBumperLeft.value); can't do this mid-match because of the ratchet. design must be changed if this is needed
+    // coClimberUnspool = new JoystickButton(coDriver,
+    // XboxController.Button.kBumperLeft.value); can't do this mid-match because of
+    // the ratchet. design must be changed if this is needed
     coFlowReverse = new JoystickButton(coDriver, XboxController.Button.kA.value);
     coFlowForward = new JoystickButton(coDriver, XboxController.Button.kY.value);
     coStopAll = new JoystickButton(coDriver, XboxController.Button.kBack.value);
-    coToggleFarShot = new JoystickButton(coDriver, XboxController.Button.kB.value); // TODO make sure Austin is OK with this button's mapping
-
+    coToggleFarShot = new JoystickButton(coDriver, XboxController.Button.kB.value); // TODO make sure Austin is OK with
+                                                                                    // this button's mapping
 
     // Configure the button bindings
     configureButtonBindings();
@@ -154,19 +158,19 @@ public class RobotContainer {
     configureDefaultCommands();
   }
 
-  public XboxController getDriver(){
+  public XboxController getDriver() {
     return driver;
   }
 
-  public XboxController getCoDriver(){
+  public XboxController getCoDriver() {
     return coDriver;
   }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
 
@@ -174,15 +178,22 @@ public class RobotContainer {
     collect.whenPressed(new DeployCollector(m_collector));
     collect.whenReleased(new RetractCollector(m_collector));
     shoot.whenPressed(new Shoot(m_shooter, m_elevator, m_hopper));
-    shoot.whenReleased(new SetHopperPercent(m_hopper, 0.0)  // TODO make real command for this (shoot command group)
-      .andThen(new SetElevatorPercent(m_elevator, 0.0))
-      .andThen(new SetShooterPercent(m_shooter, 0.0))
+    shoot.whenReleased(new SetHopperPercent(m_hopper, 0.0) // TODO make real command for this (shoot command group)
+        .andThen(new SetElevatorPercent(m_elevator, 0.0)).andThen(new SetShooterPercent(m_shooter, 0.0)));
+    toggleTrenchConfig.whenPressed(
+      new ConditionalCommand(
+        new SetLiftUp(m_elevator),
+        new ConditionalCommand(
+          new SetLiftDown(m_elevator),
+          new ParallelRaceGroup(
+            new Rumble(driver),
+            new WaitCommand(0.5)
+          ),
+          () -> m_elevator.canGoDown()
+        ),
+        () -> m_elevator.isDown()
+      )
     );
-    toggleTrenchConfig.whenPressed(new ConditionalCommand(
-      new SetLiftUp(m_elevator),
-      new SetLiftDown(m_elevator),
-      () -> m_elevator.isDown()
-     ));
     controlPanelSpin.whenPressed(new Spin3Times(m_controlPanel));
     controlPanelFind.whenPressed(new FindColor(m_controlPanel));
     runCollectorMotors.whenPressed(new SetCollectorPercent(m_collector, 1.0));
@@ -266,6 +277,6 @@ public class RobotContainer {
   }
 
   public void disabledInit(){
-    m_drive.setBrake();
+    m_drive.setCoast();
   }
 }

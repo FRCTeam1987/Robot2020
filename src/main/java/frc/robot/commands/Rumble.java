@@ -7,21 +7,21 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 
 public class Rumble extends CommandBase {
   
-  private RobotContainer m_robotContainer;
-  public Rumble(RobotContainer robotContainer) {
-    m_robotContainer = robotContainer;
+  private XboxController m_controller;
+  public Rumble(XboxController controller) {
+    m_controller = controller;
   }
 
   @Override
   public void initialize() {
-    m_robotContainer.getDriver().setRumble(RumbleType.kLeftRumble, 1);
-    m_robotContainer.getDriver().setRumble(RumbleType.kRightRumble, 1); 
+    m_controller.setRumble(RumbleType.kLeftRumble, 1);
+    m_controller.setRumble(RumbleType.kRightRumble, 1); 
   }
 
   @Override
@@ -31,8 +31,8 @@ public class Rumble extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    m_robotContainer.getDriver().setRumble(RumbleType.kLeftRumble, 0);
-    m_robotContainer.getDriver().setRumble(RumbleType.kRightRumble, 0); 
+    m_controller.setRumble(RumbleType.kLeftRumble, 0);
+    m_controller.setRumble(RumbleType.kRightRumble, 0); 
   }
 
   @Override

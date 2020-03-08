@@ -55,6 +55,7 @@ public class Shooter extends SubsystemBase {
     // addChild("slave", slave);
 
     isFarShot = false;
+    turnOnLEDs();
   }
 
   public boolean canShoot() {
@@ -146,6 +147,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Shooter RPM", getRPM());
+    SmartDashboard.putBoolean("isFarShot", isFarShot);
   }
 }
 

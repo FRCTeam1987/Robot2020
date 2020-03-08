@@ -264,7 +264,7 @@ public final class Constants {
     public static class Elevator {
         public static final int maxNumberOfBallsWhileDown = 1;
         public static final int maxNumberOfBallsWhileUp = 3;
-        public static final int startingBallCount = 3;
+        public static final int startingBallCount = 3; // should be 0 if getting ITM values, 3 for comp
     }
 
     public static class PDPMap {

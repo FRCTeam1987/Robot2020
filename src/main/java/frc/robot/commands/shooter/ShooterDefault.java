@@ -53,23 +53,12 @@ public class ShooterDefault extends CommandBase {
         m_elevator.decrementNumofBallsInLift();
       }
 
-      // if(!rpmDebouncer.get() ){
-      //   isShooting = true;
-      // }else if(isShooting ){
-      //   isShooting = false;
-      //   if (topWasTripped && !topIsTripped){
-      //     m_elevator.decrementNumofBallsInLift();
-      //     topWasTripped = false;
-      //   }else {
-      //     topWasTripped = topIsTripped;
-      //   }
+      // if(m_shooter.getIsFarShot()){
+      //   m_shooter.setRPM(Constants.kDistanceToShooterSpeedFar.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value);
+      // } else{
+      //   m_shooter.setRPM(Constants.kDistanceToShooterSpeedClose.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value);
       // }
-      if(m_shooter.getIsFarShot()){
-        m_shooter.setRPM(Constants.kDistanceToShooterSpeedFar.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value);
-      } else{
-        m_shooter.setRPM(Constants.kDistanceToShooterSpeedClose.getInterpolated(new InterpolatingDouble(m_shooter.getTY())).value);
-      }
-      // m_shooter.setRPM(3225);
+      m_shooter.setRPM(4800); // use for adding datapoints for interpolating tree map
       SmartDashboard.putNumber("default shooter rpm", m_rpm);
     } else {
       m_shooter.stop();

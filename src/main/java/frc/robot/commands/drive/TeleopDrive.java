@@ -20,7 +20,7 @@ public class TeleopDrive extends CommandBase {
   private static final boolean shouldCurvatureDrive = false;
   // TOGGLE ME!!!!!!!!!
 
-  private static final double aimAssistMinMove = 0.3;
+  private static final double aimAssistMinMove = 0.2;
   private XboxController m_driver;
   private Drive m_driveSubsystem;
   private final Shooter m_shooter;
@@ -51,14 +51,14 @@ public class TeleopDrive extends CommandBase {
 
     // TODO make this aim assist code not hacky
     // TODO make sure you see target before
-    if (m_driver.getBackButton() && Math.abs(m_shooter.getAngleError()) > 1) { //1 degree is tolerance, change if need to
-      // m_shooter.turnOnLEDs();
-      double aimAssist = 0.0;
-      double angleError = m_shooter.getAngleError();
-      aimAssist = Math.copySign(Math.max(Math.abs(angleError) / 25.0 * 0.7, aimAssistMinMove), -angleError);
-      m_driveSubsystem.arcadeDrive(move, aimAssist);
-      return;
-    }
+    // if (m_driver.getBackButton() && Math.abs(m_shooter.getAngleError()) > 1) { //1 degree is tolerance, change if need to
+    //   // m_shooter.turnOnLEDs();
+    //   double aimAssist = 0.0;
+    //   double angleError = m_shooter.getAngleError();
+    //   aimAssist = Math.copySign(Math.max(Math.abs(angleError) / 25.0 * 0.7, aimAssistMinMove), -angleError);
+    //   m_driveSubsystem.arcadeDrive(move, aimAssist);
+    //   return;
+    // }
 
     // TODO this is to try out, remove this if we don't want it
     if (shouldCurvatureDrive) {

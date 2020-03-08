@@ -144,7 +144,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean canGoDown(){
-    return getNumOfBallsInLift() > 1;
+    return getNumOfBallsInLift() <= 1;
   }
 
   @Override

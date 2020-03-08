@@ -28,27 +28,8 @@ public class SetLiftDown extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ballIsAtEntrance = m_elevator.isBallAtEntrance();
-
-    // TODO if reversing flow breaks things, take out if/else statements, don't lower elevator if(!canGoDown) , and add rumble as a conditional command  with toggle trench config
-    if(m_elevator.canGoDown()){
-      m_elevator.setLiftDown();
-      m_completionTimeStamp = Timer.getFPGATimestamp();
-    } 
-    else{
-      m_elevator.reverse(); 
-
-      if(ballIsAtEntrance){ // if balls are at entrance, just update the wasAtEntrance bool
-        ballWasAtEntrance = ballIsAtEntrance;
-      } 
-      else{ // if there used to be a ball but there isn't anymore, then decrement balls in lift
-        if(ballWasAtEntrance && !ballIsAtEntrance){
-          m_elevator.decrementNumofBallsInLift();
-        }
-        ballWasAtEntrance = ballIsAtEntrance;
-      }
-
-    }
+    m_elevator.setLiftDown();
+    m_completionTimeStamp = Timer.getFPGATimestamp();
   }
 
   // Called once the command ends or is interrupted.

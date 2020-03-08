@@ -15,7 +15,7 @@ import frc.robot.subsystems.Shooter;
 
 public class AimBot extends CommandBase {
 
-  private static final double aimAssistMinMove = 0.3;
+  private static final double aimAssistMinMove = 0.2;
 
   private final Shooter m_shooter;
   private final Drive m_drive;
@@ -38,7 +38,7 @@ public class AimBot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooter.turnOnLEDs();
+    // m_shooter.turnOnLEDs(); //turn this on to make it easier to get ITM values.
     m_isOnTarget.periodic(false);
   }
 
